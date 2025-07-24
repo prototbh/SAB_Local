@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAB Local</title>
+    <style>
+        :root {
+            --primary: #89cff0;
+            --primary-dark: #1378bd;
+            --bg: #0f0f0f;
+            --card-bg: #191919;
+            --text: #e6e6e6;
+            --text-dim: #b3b3b3;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+        .terminal-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(0deg, transparent 24%, rgba(137, 207, 240, 0.05) 25%, rgba(137, 207, 240, 0.05) 26%, transparent 27%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(137, 207, 240, 0.05) 25%, rgba(137, 207, 240, 0.05) 26%, transparent 27%, transparent);
+            background-size: 30px 30px;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0;
+            animation: fadeIn 2s 1.5s forwards;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        .unlock-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeOut 1s 3s forwards;
+        }
+        @keyframes fadeOut {
+            to { opacity: 0; visibility: hidden; }
+        }
+        .unlock-text {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(137, 207, 240, 0.5);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: textAppear 0.5s 0.5s forwards;
+        }
+        @keyframes textAppear {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .loading-bar {
+            width: 300px;
+            height: 4px;
+            background-color: rgba(137, 207, 240, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+            opacity: 0;
+            animation: textAppear 0.5s 1s forwards;
+        }
+        .loading-progress {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0;
+            background-color: var(--primary);
+            box-shadow: 0 0 10px rgba(137, 207, 240, 0.5);
+            animation: loadProgress 1.5s 1s forwards;
+        }
+        @keyframes loadProgress {
+            to { width: 100%; }
+        }
+        .success-message {
+            font-size: 1.2rem;
+            margin-top: 2rem;
+            color: var(--primary);
+            opacity: 0;
+            animation: textAppear 0.5s 2.5s forwards;
+        }
+        header {
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(137, 207, 240, 0.1);
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .logo span {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background-color: var(--primary);
+            margin-right: 10px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary);
+        }
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            position: relative;
+            padding: 0.5rem 0;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: var(--primary);
+        }
+        nav a.active {
+            color: var(--primary);
+        }
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+            animation: underline 0.3s;
+        }
+        @keyframes underline {
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
+        }
+        main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            position: relative;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), #ffffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradientShift 8s infinite alternate;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn:hover {
+            background-color: rgba(137, 207, 240, 0.1);
+            box-shadow: 0 0 15px rgba(137, 207, 240, 0.3);
+        }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(137, 207, 240, 0.2), transparent);
+            transition: all 0.5s;
+        }
+        .btn:hover::before {
+            left: 100%;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+        .feature-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(137, 207, 240, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(137, 207, 240, 0.05) 0%, transparent 100%);
+            z-index: -1;
+        }
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        .feature-card p {
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+        .feature-card ul {
+            color: var(--text-dim);
+            line-height: 1.6;
+            padding-left: 1.5rem;
+        }
+        .feature-card li {
+            margin-bottom: 0.5rem;
+        }
+        .feature-card li strong {
+            color: var(--primary);
+        }
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        .code-container {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 3rem 0;
+            position: relative;
+            border: 1px solid rgba(137, 207, 240, 0.1);
+        }
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(137, 207, 240, 0.1);
+        }
+        .code-title {
+            font-size: 1rem;
+            color: var(--primary);
+        }
+        pre {
+            color: var(--text);
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+            overflow-x: auto;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(137, 207, 240, 0.1);
+            color: var(--text-dim);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="terminal-line"></div>
+    <div class="unlock-animation">
+        <div class="unlock-text">Initializing SAB Local...</div>
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+        <div class="success-message">Access Granted</div>
+    </div>
+    <header>
+        <a href="#" class="logo"><span></span>SAB Local</a>
+        <nav>
+            <a href="#" class="tab-link active" data-tab="home">Home</a>
+            <a href="#" class="tab-link" data-tab="updates">Updates</a>
+        </nav>
+    </header>
+    <main>
+        <div id="home" class="tab-content active">
+            <section class="hero">
+                <h1 class="glitch" data-text="SAB Local">SAB Local</h1>
+                <p>Advanced scripting toolkit for enhanced gameplay experience. Unlock powerful features with our carefully crafted Lua scripts.</p>
+                <a href="#script" class="btn">Get the Script</a>
+            </section>
+            <section class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Q Dash</h3>
+                    <p>Enhanced movement with customizable dash mechanics for both PC and mobile platforms.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👁️</div>
+                    <h3>ESP Systems</h3>
+                    <p>Multiple ESP options including zone detection, invisibility spotting, and clone identification.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Protection</h3>
+                    <p>Anti-fling, pet protection, and automatic kick systems to keep your assets safe.</p>
+                </div>
+            </section>
+            <section class="code-container">
+                <div class="code-header">
+                    <div class="code-title">How to Access SAB Local</div>
+                </div>
+                <pre><code>To receive the SAB Local script:
+
+1. Donate $3 USD via Ko-fi:  
+   Click the button in the bottom left
+
+2. In the message of the donation, include:
+   - Your Discord Username (e.g., prototbh_)
+   - Say "SAB Local Access"
+
+3. After donation, take a screenshot of the payment confirmation.
+
+4. Send that screenshot to prototbh_ on Discord.
+
+You'll receive the script shortly after confirmation. Thank you for supporting development!</code></pre>
+                <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+                <script>
+                  kofiWidgetOverlay.draw('prototbhh', {
+                    'type': 'floating-chat',
+                    'floating-chat.donateButton.text': 'Support me',
+                    'floating-chat.donateButton.background-color': '#323842',
+                    'floating-chat.donateButton.text-color': '#fff'
+                  });
+                </script>
+            </section>
+        </div>
+
+        <div id="updates" class="tab-content">
+            <section class="hero">
+                <h1>Major Changes and Additions</h1>
+                <p>Here's what's new in the latest SAB Local update:</p>
+            </section>
+
+            <section class="features">
+                <div class="feature-card">
+                    <h3>New Features</h3>
+                    <ul>
+                        <li><strong>Sentry Killer</strong> - Automatically detects and destroys sentry traps</li>
+                        <li><strong>Spectator Mode</strong> - Free-roam camera mode with movement controls</li>
+                        <li><strong>Friend Allow Toggle</strong> - Toggle friend permissions in plots</li>
+                        <li><strong>Skip Tutorial</strong> - Button to instantly skip the tutorial</li>
+                        <li><strong>Find Highest Brainrot</strong> - Visual beam to highest generating animal</li>
+                        <li><strong>Enhanced Finder Mode</strong> - Expanded with more toggles and features</li>
+                        <li><strong>UI Navigation Arrows</strong> - Left/right arrows to switch between toggle pages</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h3>UI Improvements</h3>
+                    <ul>
+                        <li>New toggle frames for additional features</li>
+                        <li>Toggle page system with navigation arrows</li>
+                        <li>Improved button hover effects</li>
+                        <li>Better organized toggle layout</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h3>Code Improvements</h3>
+                    <ul>
+                        <li>Robust error handling</li>
+                        <li>Improved feature cleanup system</li>
+                        <li>Better state management</li>
+                        <li>More comprehensive <code>disableAllFeatures()</code> function</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h3>Bug Fixes</h3>
+                    <ul>
+                        <li>Fixed memory leaks</li>
+                        <li>Improved feature toggling reliability</li>
+                        <li>Better character respawn handling</li>
+                        <li>Stabilized ESP systems</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h3>New Toggles Added</h3>
+                    <ul>
+                        <li>Sentry Killer toggle</li>
+                        <li>Spectator Mode toggle</li>
+                        <li>Friend Allow toggle</li>
+                        <li>Skip Tutorial button</li>
+                        <li>Find Highest Brainrot toggle</li>
+                        <li>Enhanced Finder Mode toggles</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h3>Technical Changes</h3>
+                    <ul>
+                        <li>More service references</li>
+                        <li>Improved variable organization</li>
+                        <li>Better connection management</li>
+                        <li>More efficient scanning systems</li>
+                        <li>Enhanced visual effects</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer>
+        <p>© 2025 SAB Local. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabLinks = document.querySelectorAll('.tab-link');
+            
+            tabLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    document.querySelectorAll('.tab-link').forEach(el => el.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
