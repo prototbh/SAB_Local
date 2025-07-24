@@ -128,7 +128,7 @@
         }
         nav {
             display: flex;
-            gap: 2rem;
+            gap: 1rem;
         }
         nav a {
             color: var(--text);
@@ -169,7 +169,7 @@
             position: relative;
         }
         .hero h1 {
-            font-size: 3rem;
+            font-size: clamp(2rem, 5vw, 3rem);
             margin-bottom: 1rem;
             background: linear-gradient(to right, var(--primary), #ffffff);
             -webkit-background-clip: text;
@@ -312,6 +312,82 @@
         .tab-content.active {
             display: block;
         }
+        
+        /* New styles for screenshots section */
+        .screenshots {
+            margin: 4rem 0;
+            text-align: center;
+        }
+        
+        .screenshots h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--primary);
+        }
+        
+        .screenshot-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .screenshot-gallery img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid rgba(137, 207, 240, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .screenshot-gallery img:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(137, 207, 240, 0.3);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+                gap: 1rem;
+            }
+            
+            nav {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .hero {
+                padding: 2rem 0;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .screenshot-gallery {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .screenshot-gallery img {
+                width: 100%;
+                max-width: 400px;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .screenshot-gallery img {
+                width: calc(33.333% - 1rem);
+                max-width: 400px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -336,6 +412,14 @@
                 <h1 class="glitch" data-text="SAB Local">SAB Local</h1>
                 <p>Advanced scripting toolkit for enhanced gameplay experience. Unlock powerful features with our carefully crafted Lua scripts.</p>
                 <a href="#script" class="btn">Get the Script</a>
+            </section>
+            <section class="screenshots">
+                <h2>Mod Menu Screenshots</h2>
+                <div class="screenshot-gallery">
+                    <img src="https://raw.githubusercontent.com/prototbh/SAB_Local/refs/heads/main/Screenshot%202025-07-24%20112949.png" alt="SAB Local Home Page">
+                    <img src="https://raw.githubusercontent.com/prototbh/SAB_Local/refs/heads/main/Screenshot%202025-07-24%20112959.png" alt="SAB Local Second Page">
+                    <img src="https://raw.githubusercontent.com/prototbh/SAB_Local/refs/heads/main/Screenshot%202025-07-24%20113010.png" alt="SAB Local Finder Page">
+                </div>
             </section>
             <section class="features">
                 <div class="feature-card">
@@ -431,7 +515,6 @@ You'll receive the script shortly after confirmation. Thank you for supporting d
                         <li>Improved feature toggling reliability</li>
                         <li>Better character respawn handling</li>
                         <li>Stabilized ESP systems</li>
-                        <li>Fixed instant buy resetting to crazy numbers</li>
                     </ul>
                 </div>
 
