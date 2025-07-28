@@ -6,7 +6,7 @@
     <title>SAB Local</title>
     <style>
         :root {
-            --primary: #89cff0;
+            --primary: rgb(128, 8, 102);
             --primary-dark: #1378bd;
             --bg: #0f0f0f;
             --card-bg: #191919;
@@ -31,8 +31,8 @@
             width: 100%;
             height: 100%;
             background: 
-                linear-gradient(0deg, transparent 24%, rgba(137, 207, 240, 0.05) 25%, rgba(137, 207, 240, 0.05) 26%, transparent 27%, transparent),
-                linear-gradient(90deg, transparent 24%, rgba(137, 207, 240, 0.05) 25%, rgba(137, 207, 240, 0.05) 26%, transparent 27%, transparent);
+                linear-gradient(0deg, transparent 24%, rgba(128, 8, 102, 0.05) 25%, rgba(128, 8, 102, 0.05) 26%, transparent 27%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(128, 8, 102, 0.05) 25%, rgba(128, 8, 102, 0.05) 26%, transparent 27%, transparent);
             background-size: 30px 30px;
             pointer-events: none;
             z-index: -1;
@@ -64,7 +64,7 @@
             margin-bottom: 2rem;
             text-align: center;
             color: var(--primary);
-            text-shadow: 0 0 10px rgba(137, 207, 240, 0.5);
+            text-shadow: 0 0 10px rgba(128, 8, 102, 0.5);
             opacity: 0;
             transform: translateY(20px);
             animation: textAppear 0.5s 0.5s forwards;
@@ -75,7 +75,7 @@
         .loading-bar {
             width: 300px;
             height: 4px;
-            background-color: rgba(137, 207, 240, 0.2);
+            background-color: rgba(128, 8, 102, 0.2);
             border-radius: 2px;
             overflow: hidden;
             position: relative;
@@ -89,7 +89,7 @@
             height: 100%;
             width: 0;
             background-color: var(--primary);
-            box-shadow: 0 0 10px rgba(137, 207, 240, 0.5);
+            box-shadow: 0 0 10px rgba(128, 8, 102, 0.5);
             animation: loadProgress 1.5s 1s forwards;
         }
         @keyframes loadProgress {
@@ -107,7 +107,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(137, 207, 240, 0.1);
+            border-bottom: 1px solid rgba(128, 8, 102, 0.1);
         }
         .logo {
             font-size: 1.8rem;
@@ -202,8 +202,8 @@
             overflow: hidden;
         }
         .btn:hover {
-            background-color: rgba(137, 207, 240, 0.1);
-            box-shadow: 0 0 15px rgba(137, 207, 240, 0.3);
+            background-color: rgba(128, 8, 102, 0.1);
+            box-shadow: 0 0 15px rgba(128, 8, 102, 0.3);
         }
         .btn::before {
             content: '';
@@ -212,7 +212,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(137, 207, 240, 0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(128, 8, 102, 0.2), transparent);
             transition: all 0.5s;
         }
         .btn:hover::before {
@@ -229,7 +229,7 @@
             border-radius: 8px;
             padding: 2rem;
             transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid rgba(137, 207, 240, 0.1);
+            border: 1px solid rgba(128, 8, 102, 0.1);
             position: relative;
             overflow: hidden;
         }
@@ -244,7 +244,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(137, 207, 240, 0.05) 0%, transparent 100%);
+            background: linear-gradient(135deg, rgba(128, 8, 102, 0.05) 0%, transparent 100%);
             z-index: -1;
         }
         .feature-card h3 {
@@ -278,7 +278,7 @@
             padding: 1.5rem;
             margin: 3rem 0;
             position: relative;
-            border: 1px solid rgba(137, 207, 240, 0.1);
+            border: 1px solid rgba(128, 8, 102, 0.1);
         }
         .code-header {
             display: flex;
@@ -286,7 +286,7 @@
             align-items: center;
             margin-bottom: 1rem;
             padding-bottom: 0.5rem;
-            border-bottom: 1px solid rgba(137, 207, 240, 0.1);
+            border-bottom: 1px solid rgba(128, 8, 102, 0.1);
         }
         .code-title {
             font-size: 1rem;
@@ -303,7 +303,7 @@
             text-align: center;
             padding: 2rem;
             margin-top: 4rem;
-            border-top: 1px solid rgba(137, 207, 240, 0.1);
+            border-top: 1px solid rgba(128, 8, 102, 0.1);
             color: var(--text-dim);
         }
         .tab-content {
@@ -336,14 +336,14 @@
             max-width: 100%;
             height: auto;
             border-radius: 8px;
-            border: 1px solid rgba(137, 207, 240, 0.2);
+            border: 1px solid rgba(128, 8, 102, 0.2);
             transition: transform 0.3s, box-shadow 0.3s;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         
         .screenshot-gallery img:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(137, 207, 240, 0.3);
+            box-shadow: 0 10px 20px rgba(128, 8, 102, 0.3);
         }
         
         /* Responsive adjustments */
